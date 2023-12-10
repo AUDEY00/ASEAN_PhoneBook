@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 class PhoneNumber
@@ -161,9 +161,97 @@ class ASEANPhonebook
     }
 
     public void EditEntry()
-    { 
+    {
         Console.WriteLine("Editing entry in ASEAN phonebook");
+
+        Console.Write("Enter student number to edit: ");
+        string studentNumberToEdit = Console.ReadLine();
+
+        Student studentToEdit = null;
+
+        foreach (Student student in students)
+        {
+            if (student.GetStudentNumber() == studentNumberToEdit)
+            {
+                studentToEdit = student;
+                break;
+            }
+        }
+
+        if (studentToEdit == null)
+        {
+            Console.WriteLine("Student not found. Unable to edit.");
+            return;
+        }
+
+        Console.WriteLine($"Editing student entry:\n{studentToEdit}");
+
+        while (true)
+        {
+            Console.WriteLine("\nWhich of the following information do you wish to change?");
+            Console.WriteLine("[1] Student number");
+            Console.WriteLine("[2] Name");
+            Console.WriteLine("[3] Occupation");
+            Console.WriteLine("[4] Phone number");
+            Console.WriteLine("[5] Country code");
+            Console.WriteLine("[6] Area code");
+            Console.WriteLine("[7] Gender");
+            Console.WriteLine("[8] None - Go back to main menu");
+
+            Console.Write("Enter your choice: ");
+            string editChoice = Console.ReadLine();
+
+            switch (editChoice)
+            {
+                case "1":
+                    Console.Write("Enter new student number: ");
+                    studentToEdit.SetStudentNumber(Console.ReadLine());
+                    break;
+                case "2":
+                    Console.Write("Enter new name: ");
+                    studentToEdit.SetFirstName(Console.ReadLine());
+                    break;
+                case "3":
+                    Console.Write("Enter new occupation: ");
+                    studentToEdit.SetOccupation(Console.ReadLine());
+                    break;
+                case "4":
+                    PhoneNumber newPhoneNumber = new PhoneNumber();
+                    Console.Write("Enter new country code: ");
+                    newPhoneNumber.SetCountryCode(int.Parse(Console.ReadLine()));
+
+                    Console.Write("Enter new area code: ");
+                    newPhoneNumber.SetAreaCode(int.Parse(Console.ReadLine()));
+
+                    Console.Write("Enter new number: ");
+                    newPhoneNumber.SetNumber(long.Parse(Console.ReadLine()));
+
+                    studentToEdit.SetContactNumber(newPhoneNumber);
+                    break;
+                case "5":
+                    Console.Write("Enter new country code: ");
+                    studentToEdit.GetContactNumber().SetCountryCode(int.Parse(Console.ReadLine()));
+                    break;
+                case "6":
+                    Console.Write("Enter new area code: ");
+                    studentToEdit.GetContactNumber().SetAreaCode(int.Parse(Console.ReadLine()));
+                    break;
+                case "7":
+                    Console.Write("Enter new gender (M for male, F for female): ");
+                    studentToEdit.SetGender(char.ToUpper(Console.ReadLine()[0]));
+                    break;
+                case "8":
+                    Console.WriteLine("Returning to the main menu.");
+                    return;
+                default:
+                    Console.WriteLine("Invalid option. Please try again.");
+                    break;
+            }
+
+            Console.WriteLine($"Modified information:\n{studentToEdit}");
+        }
     }
+
 
     public void SearchByCountry()
     {
@@ -213,6 +301,3 @@ class Program
         phonebook.Run();
     }
 }
-
-
-
